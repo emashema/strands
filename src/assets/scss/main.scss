@@ -1,0 +1,41 @@
+// Strands
+.theme {
+    border: 1px solid gray;
+
+    .card-header {
+        font-size: x-small !important;
+        padding: 0px !important;
+        background: greenyellow;
+
+        p {
+            margin: 3px !important;
+            font-weight: 600;
+        }
+    }
+    .card-body {
+        padding: 5px !important;
+        font-size:larger !important;
+        font-weight: 700 !important;
+    }
+}
+
+// Letter
+.letter {
+    &.selected {
+        // TODO - add bounce effect
+        background: greenyellow;
+        animation: zoom 0.2s ease
+    }
+
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    align-content: center;
+    margin: 0px 5px 0px 5px;
+}
+
+// Animation
+@keyframes zoom {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
