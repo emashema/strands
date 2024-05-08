@@ -34,6 +34,14 @@
     margin: 0px 5px 0px 5px;
 }
 
+// Line
+.line {
+    position: absolute;
+    width: 270px;
+    height: 344px;
+    margin-left: -135px;
+}
+
 // Animation
 @keyframes zoom {
     0%, 100% { transform: scale(1); }

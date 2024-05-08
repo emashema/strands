@@ -1,5 +1,13 @@
 <template>
     <div class="container px-0">
+
+        <connection
+            :x1="0"
+            :y1="0"
+            :x2="50"
+            :y2="50"
+        />
+
         <b-row
             v-for="(row, i) in board"
             :key="i"
@@ -12,6 +20,7 @@
             >
                 <letter
                     :letter="board[i][j]"
+                    @click="click"
                 />
             </b-col>
         </b-row>
@@ -20,10 +29,12 @@
 
 <script>
 import Letter from './Letter.vue'
+import Connection from './Connection.vue'
 
 export default {
     components: {
-        Letter
+        Letter,
+        Connection
     },
     props: {
         "board"             : { type: Array, required: true },
@@ -32,6 +43,17 @@ export default {
         "strands"           : { type: Array, required: true },
         "strand_coordinates": { type: Array, required: true },
         "words"             : { type: Array, required: true },
+    },
+    data() {
+        return {
+            lines: [],
+            attempt: []
+        }
+    },
+    methods: {
+        click() {
+            // TODO
+        }
     }
 }
 </script>

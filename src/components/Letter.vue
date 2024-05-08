@@ -1,6 +1,11 @@
 <template>
     <div
-        :class="{'h4': true, 'letter': true, 'cursor-pointer': true, 'selected': selected}"
+        :class="{
+            'h4': true,
+            'letter': true,
+            'cursor-pointer': true,
+            'selected': selected
+        }"
         @click="click"
     >
         {{ letter }}
@@ -23,7 +28,7 @@ export default {
     methods: {
         click() {
             this.selected = !this.selected;
-            this.$emit('select');
+            this.$emit('click');
         }
     }
 }
