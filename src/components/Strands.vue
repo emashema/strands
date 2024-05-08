@@ -13,9 +13,15 @@
 			</b-card>
 		</b-row>
 
+		<!-- Current attempt -->
+		<b-row class="mt-4 w-100">
+			{{ $refs['letter-grid'] ? $refs['letter-grid'].$data.attempt.join() : '' }}
+		</b-row>
+
 		<!-- Grid -->
-		<b-row class="w-100 mt-4">
-			<grid
+		<b-row class="mt-2 w-100">
+			<letter-grid
+				ref="letter-grid"
 				:board="board"
 				:clue="clue"
 				:spangram="spangram"
@@ -31,11 +37,11 @@
 </template>
 
 <script>
-import Grid from './Grid.vue'
+import LetterGrid from './LetterGrid.vue'
 
 export default {
 	components: {
-		Grid
+		LetterGrid
 	},
 	data() {
 		return {
@@ -50,13 +56,14 @@ export default {
 		}
 	},
 	created() {
+		console.log(this.$refs)
 		let todays_data = require('./../assets/data/strands/63.json')
 
 		this.board = todays_data.startingBoard
 		this.clue = todays_data.clue
 		this.spangram = todays_data.spangram
 		this.strand_coordinates = todays_data.themeCoords
-		this.strands = this.strand_coordinates.keys()
+		this.strands = Object.keys(this.strand_coordinates)
 		this.words = todays_data.solutions
 	}
 }
