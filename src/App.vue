@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Strands from './components/Strands.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Strands
   }
 }
 </script>
