@@ -14,7 +14,10 @@
 		</b-row>
 
 		<!-- Current attempt -->
-		<b-row class="mt-3 w-100 justify-content-center" :key="attempted_word">
+		<b-row
+			class="mt-3 w-100 attempted_word"
+			:key="attempted_word"
+		>
 			<h5 class="font-weight-bold">
 				{{ attempted_word }}
 			</h5>

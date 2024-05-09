@@ -150,6 +150,7 @@ export default {
                 this.$refs[x+'-'+y][0].selected = false
             });
             this.attempt = []
+            this.attempted_word; // force compute
         },
         mark_spangram() {
             this.solved.push(this.attempt)
