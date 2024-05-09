@@ -15,7 +15,7 @@
             v-for="(row, x) in board"
             :key="x"
             no-gutters
-            class="mb-2"
+            class="mb-3"
         >
             <b-col
                 v-for="(col, y) in row"
@@ -129,6 +129,7 @@ export default {
             // Check if correct guess
             if(JSON.stringify(this.strand_coordinates[this.attempted_word]) == JSON.stringify(this.attempt)) {
                 this.solved.push(this.attempt)
+                this.$emit('solved')
                 this.attempt.forEach(([x,y]) => {
                     this.$refs[x+'-'+y][0].in_solved = true
                 });

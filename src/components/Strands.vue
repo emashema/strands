@@ -1,5 +1,5 @@
 <template>
-	<div class="container"  style="width: 300px !important;">
+	<div class="container"  style="width: 350px !important;">
 		<!-- Today's Theme -->
 		<b-row class="w-100">
 			<b-card
@@ -34,11 +34,22 @@
 				:strand_coordinates="strand_coordinates"
 				:words="words"
 				@attempted-word="(w) => attempted_word = w"
+				@solved="solved_count++"
 			/>
 		</b-row>
 
 		<!-- Buttons -->
-		<b-row class="w-100"></b-row>
+		<b-row class="mt-2 w-100" no-gutters>
+			<b-col cols="auto">
+				<b-button
+					pill
+					variant="outline-secondary"
+				>Hint</b-button>
+			</b-col>
+			<b-col class="m-auto">
+				<b>{{ solved_count }}</b> out of <b>{{ Object.keys(strand_coordinates).length+1 }}</b> theme words found.
+			</b-col>
+		</b-row>
 	</div>
 </template>
 
@@ -58,7 +69,8 @@ export default {
 			strand_coordinates: [],
 			words: [],
 
-			attempted_word: null
+			attempted_word: null,
+			solved_count: 0
 		}
 	},
 	created() {
