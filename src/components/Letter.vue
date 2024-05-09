@@ -4,6 +4,7 @@
             'h4': true,
             'letter': true,
             'cursor-pointer': true,
+            'hinted': hinted,
             'selected': (selected || in_solved),
             'in-spangram': in_spangram
         }"
@@ -24,6 +25,7 @@ export default {
     },
     data() {
         return {
+            hinted: false,
             selected: false,
             in_solved: false,
             in_spangram: false

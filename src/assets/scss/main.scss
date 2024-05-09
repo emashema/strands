@@ -25,6 +25,9 @@
 
 // Letter
 .letter {
+    &.hinted {
+        border: dashed greenyellow;
+    }
     &.selected {
         // TODO - add bounce effect
         background: greenyellow;

@@ -139,6 +139,10 @@ export default {
             if(this.spangram == this.attempted_word)
                 this.mark_spangram()
 
+            // Check if acceptable word
+            if(this.words.includes(this.attempted_word))
+                this.$emit('word-found')
+
             this.reset_attempt()
 
             // Check if game over
@@ -152,6 +156,15 @@ export default {
             });
             this.attempt = []
             this.attempted_word; // force compute
+        },
+        mark_hinted() {
+            for (const coordinates of Object.values(this.strand_coordinates))
+                if (!JSON.stringify(this.solved).includes(JSON.stringify(coordinates))) {
+                    coordinates.forEach(c => {
+                        this.$refs[c[0]+'-'+c[1]][0].hinted = true
+                    })
+                    break;
+                }
         },
         mark_spangram() {
             this.solved.push(this.attempt)

@@ -34,6 +34,7 @@
 				:strand_coordinates="strand_coordinates"
 				:words="words"
 				@attempted-word="(w) => attempted_word = w"
+				@word-found="words_found++"
 				@solved="solved_count++"
 			/>
 		</b-row>
@@ -41,10 +42,15 @@
 		<!-- Buttons -->
 		<b-row class="mt-2 w-100" no-gutters>
 			<b-col cols="auto">
-				<b-button
-					pill
-					variant="outline-secondary"
-				>Hint</b-button>
+				<div
+					:class="{
+						'btn': true,
+						'btn-outline-secondary': true,
+						'rounded-pill': true,
+						'disabled': hint_disabled
+					}"
+					@click="$refs['letter-grid'].mark_hinted()"
+				>Hint</div>
 			</b-col>
 			<b-col class="m-auto">
 				<b>{{ solved_count }}</b> out of <b>{{ Object.keys(strand_coordinates).length+1 }}</b> theme words found.
@@ -68,9 +74,15 @@ export default {
 			strands: [],
 			strand_coordinates: [],
 			words: [],
-
+			
 			attempted_word: null,
-			solved_count: 0
+			solved_count: 0,
+			words_found: 0
+		}
+	},
+	computed: {
+		hint_disabled() {
+			return this.words_found == 0 || this.words_found % 3 != 0
 		}
 	},
 	created() {
