@@ -26,6 +26,9 @@
         background: greenyellow;
         animation: zoom 0.2s ease
     }
+    &.in-spangram {
+        background-color: gold !important;
+    }
 
     width: 35px;
     height: 35px;
@@ -37,9 +40,23 @@
 // Line
 .line {
     position: absolute;
+    stroke: greenyellow;
+    &.in-spangram {
+        stroke: gold !important;
+    }
     width: 270px;
     height: 344px;
     margin-left: -135px;
+}
+
+// Toast
+.custom-toast {
+    margin: auto !important;
+    color: white !important;
+    font-weight: 600 !important;
+    background: black !important;
+    width: fit-content !important;
+    text-align: center !important;
 }
 
 // Animation

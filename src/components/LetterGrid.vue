@@ -3,6 +3,7 @@
 
         <letter-line
             v-for="line in lines"
+            :ref="line.x1+'-'+line.y1+'-'+line.x2+'-'+line.y2"
             :key="line.x1+'-'+line.y1+'-'+line.x2+'-'+line.y2"
             :x1="line.x1"
             :y1="line.y1"
@@ -21,8 +22,10 @@
                 :key="y"
             >
                 <letter
+                    :ref="x+'-'+y"
                     :letter="board[x][y]"
-                    @click="click(board[x][y], x, y)"
+                    @click="click(x, y)"
+                    @submit="submit"
                 />
             </b-col>
         </b-row>
@@ -48,56 +51,125 @@ export default {
     },
     data() {
         return {
-            attempt: [
-                // [ E
-                //     5,
-                //     5
-                // ],
-                // [ N
-                //     6,
-                //     5
-                // ],
-                // [ V
-                //     7,
-                //     5
-                // ],
-                // [ Y
-                //     6,
-                //     4
-                // ]
-            ]
+            attempt: [],
+            solved: []
         }
     },
     computed: {
-        lines() {
-            let l = []
+        attempted_word() {
+            let str = ''
 
-            console.log('> in LINES')
-            console.log(this.attempt.length)
-            for (let index = 0; index < this.attempt.length-1; index++) {
-                l.push(
+            this.attempt.forEach(([x,y]) => {
+                str += this.board[x][y]
+            })
+            this.$emit('attempted-word', str)
+
+            return str
+        },
+        lines() {
+            let arr = []
+
+            // For solved
+            for (let i=0; i<this.solved.length; i++) {
+                for (let j=0; j<this.solved[i].length-1; j++) {
+                    arr.push(
+                        {
+                            x1: this.solved[i][j][0],
+                            y1: this.solved[i][j][1],
+                            x2: this.solved[i][j+1][0],
+                            y2: this.solved[i][j+1][1]
+                        }
+                    )
+                }
+            }
+
+            // For current attempt
+            for (let i=0; i<this.attempt.length-1; i++) {
+                arr.push(
                     {
-                        x1: this.attempt[index][1],
-                        y1: this.attempt[index][0],
-                        x2: this.attempt[index+1][1],
-                        y2: this.attempt[index+1][0]
+                        x1: this.attempt[i][0],
+                        y1: this.attempt[i][1],
+                        x2: this.attempt[i+1][0],
+                        y2: this.attempt[i+1][1]
                     }
                 )
             }
 
-            console.log(JSON.stringify(l))
-
-            return l
+            return arr
         }
     },
     methods: {
-        click(letter, x, y) {
-            // console.log(letter)
-            // console.log(x)
-            // console.log(y)
-            // TODO - push only if valid attempt([3,3] => [[2,2],[2,3],[2,4],[3,4],[4,4],[4,3],[4,2],[3,2]])
-            this.attempt.push([x, y])
-            // console.log(JSON.stringify(this.attempt))
+        click(x, y) {
+            let reset_attempt = false
+
+            // Not the first letter
+            if(this.attempt.length != 0) {
+                let prev_x = this.attempt[this.attempt.length-1][0]
+                let prev_y = this.attempt[this.attempt.length-1][1]
+
+                if([prev_x-1, prev_x, prev_x+1].includes(x))
+                    if([prev_y-1, prev_y, prev_y+1].includes(y))
+                        this.attempt.push([x, y])
+                    else
+                        reset_attempt = true
+                else
+                    reset_attempt = true
+            }
+            else
+                this.attempt.push([x, y])
+
+            if(reset_attempt) {
+                this.reset_attempt()
+                this.attempt = [ [x, y] ]
+            }
+
+            this.attempted_word; // force compute
+        },
+        submit() {
+            // Check if correct guess
+            if(JSON.stringify(this.strand_coordinates[this.attempted_word]) == JSON.stringify(this.attempt)) {
+                this.solved.push(this.attempt)
+                this.attempt.forEach(([x,y]) => {
+                    this.$refs[x+'-'+y][0].in_solved = true
+                });
+            }
+
+            // Check if spangram
+            if(this.spangram == this.attempted_word)
+                this.mark_spangram()
+
+            this.reset_attempt()
+
+            // Check if game over
+            if(this.solved.length == (Object.keys(this.strand_coordinates).length + 1)) {
+                this.$toast('Good job!')
+            }
+        },
+        reset_attempt() {
+            this.attempt.forEach(([x,y]) => {
+                this.$refs[x+'-'+y][0].selected = false
+            });
+            this.attempt = []
+        },
+        mark_spangram() {
+            this.solved.push(this.attempt)
+
+            for (let i=0; i<this.attempt.length-1; i++) {
+                // First point
+                let x1 = this.attempt[i][0]
+                let y1 = this.attempt[i][1]
+
+                // Second point
+                let x2 = this.attempt[i+1][0]
+                let y2 = this.attempt[i+1][1]
+
+                // Mark points and connection as part of spangram
+                this.$refs[x1+'-'+y1][0].in_spangram = true
+                this.$refs[x2+'-'+y2][0].in_spangram = true
+                this.$refs[x1+'-'+y1+'-'+x2+'-'+y2][0].in_spangram = true
+            }
+
+            this.$toast('Spangram!')
         }
     }
 }

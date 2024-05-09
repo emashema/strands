@@ -14,8 +14,10 @@
 		</b-row>
 
 		<!-- Current attempt -->
-		<b-row class="mt-4 w-100">
-			{{ $refs['letter-grid'] ? $refs['letter-grid'].$data.attempt.join() : '' }}
+		<b-row class="mt-3 w-100 justify-content-center" :key="attempted_word">
+			<h5 class="font-weight-bold">
+				{{ attempted_word }}
+			</h5>
 		</b-row>
 
 		<!-- Grid -->
@@ -28,6 +30,7 @@
 				:strands="strands"
 				:strand_coordinates="strand_coordinates"
 				:words="words"
+				@attempted-word="(w) => attempted_word = w"
 			/>
 		</b-row>
 
@@ -45,18 +48,18 @@ export default {
 	},
 	data() {
 		return {
-			solved: [],
-
 			board: [],
 			clue: null,
 			spangram: null,
 			strands: [],
 			strand_coordinates: [],
-			words: []
+			words: [],
+
+			attempted_word: null
 		}
 	},
 	created() {
-		console.log(this.$refs)
+		// TODO - make dynamic
 		let todays_data = require('./../assets/data/strands/63.json')
 
 		this.board = todays_data.startingBoard
